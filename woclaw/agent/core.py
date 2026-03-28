@@ -52,7 +52,7 @@ class Agent:
             steps.append({"phase": "understand", "result": understood})
             
             plan = await self.planner.plan(understood)
-            steps.append({"phase": "plan", "result": plan})
+            steps.append({"phase": "plan", "result": [step.__dict__ for step in plan]})
             
             executed = await self.executor.execute(plan, self.tools)
             steps.append({"phase": "execute", "result": executed})
@@ -84,11 +84,13 @@ class Agent:
         
 任务: {task}
 
-请返回:
-1. 任务类型
-2. 需要的工具
-3. 预期输出
-4. 潜在风险
+请返回 JSON 格式:
+{{
+    "task_type": "任务类型",
+    "required_tools": ["需要的工具列表"],
+    "expected_output": "预期输出",
+    "potential_risks": ["潜在风险"]
+}}
 """
         return await self.llm.generate(prompt)
     

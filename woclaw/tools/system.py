@@ -18,20 +18,6 @@ class SystemTool(BaseTool):
     description: ClassVar[str] = "系统监控：CPU、内存、磁盘、网络监控"
     
     async def execute(self, action: str, **kwargs) -> Any:
-        """
-        执行系统监控操作
-        
-        Args:
-            action: 操作类型
-                - info: 系统信息
-                - cpu: CPU 信息
-                - memory: 内存信息
-                - disk: 磁盘信息
-                - network: 网络信息
-                - battery: 电池信息
-                - users: 用户信息
-                - uptime: 运行时间
-        """
         handlers = {
             "info": self._info,
             "cpu": self._cpu,
@@ -97,9 +83,16 @@ class SystemTool(BaseTool):
         except ImportError:
             raise ImportError("Please install psutil: pip install psutil")
     
-    async def _disk(self, path: str = "/") -> dict[str, Any]:
+    async def _disk(self, path: str | None = None) -> dict[str, Any]:
         try:
             import psutil
+            
+            if path is None:
+                if platform.system() == "Windows":
+                    path = "C:\\"
+                else:
+                    path = "/"
+            
             usage = psutil.disk_usage(path)
             partitions = []
             for p in psutil.disk_partitions():
@@ -114,7 +107,7 @@ class SystemTool(BaseTool):
                         "free": usage_p.free,
                         "percent": usage_p.percent,
                     })
-                except PermissionError:
+                except (PermissionError, OSError):
                     continue
             
             io = psutil.disk_io_counters()
@@ -147,7 +140,7 @@ class SystemTool(BaseTool):
                         "status": conn.status,
                         "pid": conn.pid,
                     })
-                except Exception:
+                except (psutil.AccessDenied, psutil.NoSuchProcess, AttributeError):
                     continue
             
             interfaces = {}

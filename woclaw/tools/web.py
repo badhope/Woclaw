@@ -2,6 +2,7 @@
 网络请求工具
 """
 
+import os
 import aiohttp
 from typing import Any, ClassVar
 
@@ -21,17 +22,6 @@ class WebTool(BaseTool):
         action: str,
         **kwargs
     ) -> Any:
-        """
-        执行网络请求
-        
-        Args:
-            action: 操作类型
-                - get: GET 请求
-                - post: POST 请求
-                - put: PUT 请求
-                - delete: DELETE 请求
-                - download: 下载文件
-        """
         handlers = {
             "get": self._request,
             "post": self._request,
@@ -117,7 +107,7 @@ class WebTool(BaseTool):
                     return {
                         "success": True,
                         "path": path,
-                        "size": len(open(path, "rb").read()),
+                        "size": os.path.getsize(path),
                     }
                     
         except Exception as e:

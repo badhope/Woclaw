@@ -4,10 +4,10 @@
 
 import asyncio
 import socket
+import platform
 import aiohttp
 from pathlib import Path
 from typing import Any, ClassVar
-from urllib.parse import urlparse
 
 from woclaw.tools.base import BaseTool
 
@@ -21,19 +21,6 @@ class NetworkTool(BaseTool):
     description: ClassVar[str] = "网络工具：下载、DNS、端口扫描、Ping"
     
     async def execute(self, action: str, **kwargs) -> Any:
-        """
-        执行网络操作
-        
-        Args:
-            action: 操作类型
-                - download: 下载文件
-                - upload: 上传文件
-                - dns_lookup: DNS 查询
-                - port_scan: 端口扫描
-                - ping: Ping 测试
-                - whois: Whois 查询
-                - check_url: 检查 URL 可访问性
-        """
         handlers = {
             "download": self._download,
             "upload": self._upload,
@@ -164,11 +151,13 @@ class NetworkTool(BaseTool):
     
     async def _ping(self, host: str, count: int = 4) -> dict[str, Any]:
         try:
+            if platform.system() == "Windows":
+                cmd = ["ping", "-n", str(count), host]
+            else:
+                cmd = ["ping", "-c", str(count), host]
+            
             proc = await asyncio.create_subprocess_exec(
-                "ping" if platform.system() != "Windows" else "ping",
-                "-c" if platform.system() != "Windows" else "-n",
-                str(count),
-                host,
+                *cmd,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
@@ -207,6 +196,3 @@ class NetworkTool(BaseTool):
                 "accessible": False,
                 "error": str(e),
             }
-
-
-import platform
