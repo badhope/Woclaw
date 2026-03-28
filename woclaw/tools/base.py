@@ -55,11 +55,13 @@ class ToolRegistry:
         from woclaw.tools.shell import ShellTool
         from woclaw.tools.browser import BrowserTool
         from woclaw.tools.web import WebTool
+        from woclaw.tools.data import DataTool
         
         self.register(FilesystemTool())
         self.register(ShellTool())
         self.register(BrowserTool())
         self.register(WebTool())
+        self.register(DataTool())
     
     def register(self, tool: BaseTool):
         """

@@ -43,11 +43,11 @@ def run(task: Optional[str], config_path: Optional[str], model: Optional[str], v
         console.print("[red]错误: 请提供任务或配置文件[/red]")
         sys.exit(1)
     
-    config = _load_config(config_path)
+    cfg = _load_config(config_path)
     if model:
-        config.llm.model = model
+        cfg.llm.model = model
     
-    agent = Agent(config)
+    agent = Agent(cfg)
     
     if task:
         _run_task(agent, task, verbose)
@@ -64,8 +64,8 @@ def interactive():
         title="Woclaw"
     ))
     
-    config = _load_config(None)
-    agent = Agent(config)
+    cfg = _load_config(None)
+    agent = Agent(cfg)
     
     while True:
         try:
@@ -86,8 +86,7 @@ def interactive():
 
 
 @cli.command()
-@click.option("--provider", "-p", help="LLM 提供者")
-def tools(provider: Optional[str]):
+def tools():
     """
     列出可用工具
     """
@@ -100,7 +99,8 @@ def tools(provider: Optional[str]):
     
     for name in registry.list_tools():
         tool = registry.get(name)
-        table.add_row(name, tool.description)
+        if tool:
+            table.add_row(name, tool.description)
     
     console.print(table)
 
@@ -132,9 +132,10 @@ def _load_config(config_path: Optional[str]) -> Config:
     if config_path:
         import importlib.util
         spec = importlib.util.spec_from_file_location("config", config_path)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module.config
+        if spec and spec.loader:
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            return module.config
     
     return Config()
 

@@ -8,6 +8,7 @@ import os
 
 from woclaw.tools.filesystem import FilesystemTool
 from woclaw.tools.shell import ShellTool
+from woclaw.tools.data import DataTool
 
 
 @pytest.fixture
@@ -78,3 +79,66 @@ async def test_shell_timeout():
     
     assert result["success"] is False
     assert "timeout" in result["error"].lower()
+
+
+@pytest.mark.asyncio
+async def test_data_json_read_write(temp_dir):
+    """测试 JSON 读写"""
+    tool = DataTool()
+    test_file = os.path.join(temp_dir, "test.json")
+    test_data = {"name": "Woclaw", "version": "0.1.0"}
+    
+    await tool.execute("json_write", path=test_file, data=test_data)
+    data = await tool.execute("json_read", path=test_file)
+    
+    assert data == test_data
+
+
+@pytest.mark.asyncio
+async def test_data_csv_read_write(temp_dir):
+    """测试 CSV 读写"""
+    tool = DataTool()
+    test_file = os.path.join(temp_dir, "test.csv")
+    test_data = [
+        {"name": "Woclaw", "version": "0.1.0"},
+        {"name": "OpenClaw", "version": "1.0.0"},
+    ]
+    
+    await tool.execute("csv_write", path=test_file, data=test_data)
+    data = await tool.execute("csv_read", path=test_file)
+    
+    assert len(data) == 2
+    assert data[0]["name"] == "Woclaw"
+
+
+@pytest.mark.asyncio
+async def test_data_filter():
+    """测试数据过滤"""
+    tool = DataTool()
+    test_data = [
+        {"name": "Woclaw", "type": "agent"},
+        {"name": "OpenClaw", "type": "framework"},
+        {"name": "MiniClaw", "type": "agent"},
+    ]
+    
+    result = await tool.execute("filter", data=test_data, conditions={"type": "agent"})
+    
+    assert len(result) == 2
+
+
+@pytest.mark.asyncio
+async def test_data_transform():
+    """测试数据转换"""
+    tool = DataTool()
+    test_data = [
+        {"old_name": "Woclaw", "old_version": "0.1.0"},
+    ]
+    
+    result = await tool.execute(
+        "transform",
+        data=test_data,
+        mapping={"old_name": "name", "old_version": "version"}
+    )
+    
+    assert result[0]["name"] == "Woclaw"
+    assert result[0]["version"] == "0.1.0"

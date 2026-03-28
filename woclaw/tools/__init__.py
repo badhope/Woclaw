@@ -7,6 +7,7 @@ from woclaw.tools.filesystem import FilesystemTool
 from woclaw.tools.shell import ShellTool
 from woclaw.tools.browser import BrowserTool
 from woclaw.tools.web import WebTool
+from woclaw.tools.data import DataTool
 
 __all__ = [
     "BaseTool",
@@ -15,4 +16,5 @@ __all__ = [
     "ShellTool",
     "BrowserTool",
     "WebTool",
+    "DataTool",
 ]
