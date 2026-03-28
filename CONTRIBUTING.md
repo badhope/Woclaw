@@ -8,7 +8,7 @@
 
 如果你发现了 bug 或有功能建议，请：
 
-1. 在 [Issues](https://github.com/badhope/Woclaw/issues) 中搜索是否已有相关问题
+1. 在 [Issues](https://github.com/badhope/Xiaobai/issues) 中搜索是否已有相关问题
 2. 如果没有，创建一个新的 Issue，包含：
    - 清晰的标题
    - 详细的问题描述
@@ -51,13 +51,13 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/badhope/Woclaw.git
-cd woclaw
+git clone https://github.com/badhope/Xiaobai.git
+cd Xiaobai
 
 # 创建虚拟环境
 python -m venv venv
 source venv/bin/activate  # Linux/macOS
-# 或 venv\Scripts\activate  # Windows
+venv\Scripts\activate  # Windows
 
 # 安装开发依赖
 pip install -e ".[dev,all]"
@@ -72,6 +72,39 @@ pytest
 ruff check .
 black .
 mypy woclaw
+```
+
+### 添加新工具
+
+1. 在 `woclaw/tools/` 目录下创建新文件
+2. 继承 `BaseTool` 类
+3. 实现 `execute` 方法
+4. 在 `woclaw/tools/__init__.py` 中注册
+5. 添加测试用例
+6. 更新文档
+
+示例：
+
+```python
+from woclaw.tools.base import BaseTool
+from typing import Any, ClassVar
+
+
+class MyTool(BaseTool):
+    name: ClassVar[str] = "my_tool"
+    description: ClassVar[str] = "我的工具描述"
+    
+    async def execute(self, action: str, **kwargs) -> Any:
+        handlers = {
+            "action1": self._action1,
+        }
+        handler = handlers.get(action)
+        if not handler:
+            raise ValueError(f"Unknown action: {action}")
+        return await handler(**kwargs)
+    
+    async def _action1(self, **kwargs) -> dict[str, Any]:
+        return {"success": True, "result": "done"}
 ```
 
 ## 行为准则
