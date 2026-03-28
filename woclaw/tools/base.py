@@ -56,12 +56,28 @@ class ToolRegistry:
         from woclaw.tools.browser import BrowserTool
         from woclaw.tools.web import WebTool
         from woclaw.tools.data import DataTool
+        from woclaw.tools.process import ProcessTool
+        from woclaw.tools.clipboard import ClipboardTool
+        from woclaw.tools.system import SystemTool
+        from woclaw.tools.network import NetworkTool
+        from woclaw.tools.screenshot import ScreenshotTool
+        from woclaw.tools.automation import AutomationTool
+        from woclaw.tools.archive import ArchiveTool
+        from woclaw.tools.image import ImageTool
         
         self.register(FilesystemTool())
         self.register(ShellTool())
         self.register(BrowserTool())
         self.register(WebTool())
         self.register(DataTool())
+        self.register(ProcessTool())
+        self.register(ClipboardTool())
+        self.register(SystemTool())
+        self.register(NetworkTool())
+        self.register(ScreenshotTool())
+        self.register(AutomationTool())
+        self.register(ArchiveTool())
+        self.register(ImageTool())
     
     def register(self, tool: BaseTool):
         """

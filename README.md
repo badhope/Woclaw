@@ -20,33 +20,35 @@
 
 ### 简介
 
-Woclaw 是一个从 OpenClaw 蒸馏而来的轻量级自主电脑控制智能体。它能够完全自主地理解任务、规划步骤、调用工具、执行操作，并验证结果——无需人工干预。
+Woclaw 是一个完全自主的电脑控制智能体。它能够理解用户指令，自主规划并执行各种电脑操作——文件管理、程序运行、浏览器控制、系统监控等，无需人工干预。
 
-**核心理念**：代码精简，功能完整。
+**核心理念**：让 AI 像人类一样操作电脑。
 
 ```
-用户: "帮我从某网站抓取产品数据，整理成 Excel，然后发邮件给团队"
+用户: "帮我整理下载文件夹，把图片移到 Pictures，文档移到 Documents"
 
 Woclaw: 
-  ✓ 理解任务 → 分解为 5 个子任务
-  ✓ 打开浏览器 → 导航到目标网站
-  ✓ 抓取数据 → 解析并清洗
-  ✓ 生成 Excel → 保存到本地
-  ✓ 发送邮件 → 完成报告
+  ✓ 扫描下载文件夹 → 发现 50 个文件
+  ✓ 分类文件 → 识别图片、文档、压缩包
+  ✓ 创建目录 → Pictures/Downloads, Documents/Downloads
+  ✓ 移动文件 → 完成 50 个文件整理
 ```
 
 ### ✨ 特性
 
 | 特性 | 描述 |
 |------|------|
-| 🧠 **完全自主** | 无需人工干预，Agent 自主规划与执行 |
-| 🪶 **轻量级** | 核心代码 < 3000 行，依赖 < 10 个 |
-| 🔧 **丰富工具** | 文件系统、Shell、浏览器、网络请求 |
-| 🌐 **混合浏览器** | 支持无头浏览器与真实浏览器控制 |
+| 🧠 **完全自主** | 理解任务、规划步骤、执行操作、验证结果 |
+| 🪶 **轻量级** | 核心代码精简，依赖少，启动快 |
+| 🔧 **丰富工具** | 13+ 工具覆盖电脑操作各个方面 |
+| 🖱️ **桌面自动化** | 键盘鼠标模拟，可操作任何应用 |
+| 📸 **屏幕截图** | 全屏、区域、窗口截图 |
+| 📊 **系统监控** | CPU、内存、磁盘、网络实时监控 |
+| 🔄 **进程管理** | 启动、停止、监控进程 |
+| 📋 **剪贴板** | 读写剪贴板内容 |
+| 🌐 **网络工具** | 下载、端口扫描、DNS 查询 |
 | 🤖 **多 LLM 支持** | OpenAI、Claude、Ollama 本地模型 |
-| 💾 **持久存储** | PostgreSQL 存储任务历史与学习经验 |
-| ⚡ **高并发** | 多进程架构，支持大规模任务处理 |
-| 🛡️ **高级反爬** | Cloudflare 绕过、验证码处理 |
+| 💾 **持久存储** | PostgreSQL 存储任务历史 |
 
 ### 🏗️ 架构
 
@@ -64,10 +66,18 @@ Woclaw:
 │  └─────────────────────────────────────────────────────────┘   │
 │                              ↓                                  │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │                    Tool Layer                            │   │
+│  │                    Tool Layer (13+ 工具)                 │   │
 │  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │   │
 │  │  │FileSystem│ │  Shell   │ │ Browser  │ │   Web    │    │   │
 │  │  │ 文件系统  │ │ 命令执行 │ │ 浏览器   │ │ 网络请求 │    │   │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │   │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │   │
+│  │  │ Process  │ │Clipboard │ │ System   │ │ Network  │    │   │
+│  │  │ 进程管理  │ │ 剪贴板   │ │ 系统监控 │ │ 网络工具 │    │   │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │   │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │   │
+│  │  │Screenshot│ │Automation│ │ Archive  │ │  Image   │    │   │
+│  │  │ 截图     │ │ 键盘鼠标 │ │ 压缩解压 │ │ 图像处理 │    │   │
 │  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                              ↓                                  │
@@ -93,8 +103,8 @@ Woclaw:
 
 ```bash
 # 克隆仓库
-git clone https://github.com/badhope/Woclaw.git
-cd woclaw
+git clone https://github.com/badhope/Xiaobai.git
+cd Xiaobai
 
 # 安装依赖
 pip install -e .
@@ -110,29 +120,24 @@ playwright install
 woclaw
 
 # 执行单个任务
-woclaw run "从 example.com 抓取所有产品信息"
+woclaw run "帮我整理下载文件夹"
 
 # 从配置文件执行
-woclaw run --config tasks.yaml
+woclaw run --config config.py
 ```
 
 ### ⚙️ 配置
-
-Woclaw 使用 Python 配置文件，灵活且强大：
 
 ```python
 # config.py
 from woclaw import Config
 
 config = Config(
-    # LLM 配置
     llm={
-        "provider": "openai",  # openai, claude, ollama
+        "provider": "openai",
         "model": "gpt-4",
         "api_key": "your-api-key",
     },
-    
-    # 数据库配置
     database={
         "host": "localhost",
         "port": 5432,
@@ -140,14 +145,6 @@ config = Config(
         "user": "postgres",
         "password": "password",
     },
-    
-    # 浏览器配置
-    browser={
-        "headless": True,
-        "proxy": None,
-    },
-    
-    # 并发配置
     concurrency={
         "max_workers": 4,
         "task_timeout": 300,
@@ -157,22 +154,37 @@ config = Config(
 
 ### 🛠️ 工具列表
 
-| 工具 | 功能 | 示例 |
+| 工具 | 功能 | 操作 |
 |------|------|------|
-| `filesystem` | 文件读写、搜索、组织 | 读取文件、创建目录、搜索内容 |
-| `shell` | 执行系统命令 | 运行脚本、安装软件 |
+| `filesystem` | 文件系统操作 | 读写、搜索、复制、移动、删除 |
+| `shell` | 执行系统命令 | 运行程序、脚本执行 |
 | `browser` | 浏览器控制 | 打开网页、点击、输入、截图 |
 | `web` | HTTP 请求 | API 调用、网页抓取 |
-| `data` | 数据处理 | JSON/CSV/Excel 处理 |
+| `data` | 数据处理 | JSON/CSV 读写、过滤、转换 |
+| `process` | 进程管理 | 列出、查找、启动、终止进程 |
+| `clipboard` | 剪贴板操作 | 读取、写入、清空 |
+| `system` | 系统监控 | CPU、内存、磁盘、网络信息 |
+| `network` | 网络工具 | 下载、端口扫描、DNS 查询 |
+| `screenshot` | 截图 | 全屏、区域、窗口截图 |
+| `automation` | 键盘鼠标 | 模拟按键、鼠标点击、移动 |
+| `archive` | 压缩解压 | ZIP/TAR 创建和解压 |
+| `image` | 图像处理 | 调整大小、格式转换、裁剪、滤镜 |
 
-### 📊 性能
+### 📊 使用示例
 
-| 指标 | 数值 |
-|------|------|
-| 核心代码 | < 3000 行 |
-| 依赖数量 | < 10 个 |
-| 启动时间 | < 1 秒 |
-| 并发能力 | > 10000 页/天 |
+```python
+# 示例：自动整理文件
+woclaw run "把下载文件夹里的图片按日期整理到 Pictures"
+
+# 示例：批量处理
+woclaw run "把所有 PDF 转成图片，然后压缩成 ZIP"
+
+# 示例：系统监控
+woclaw run "监控 CPU 使用率，超过 80% 时发通知"
+
+# 示例：自动化操作
+woclaw run "打开记事本，输入今天的日期，保存到桌面"
+```
 
 ### 🤝 贡献
 
@@ -188,29 +200,32 @@ config = Config(
 
 ### Introduction
 
-Woclaw is a lightweight autonomous computer control agent distilled from OpenClaw. It can fully autonomously understand tasks, plan steps, call tools, execute operations, and verify results—all without human intervention.
+Woclaw is a fully autonomous computer control agent. It can understand user commands, autonomously plan and execute various computer operations—file management, program execution, browser control, system monitoring, etc.—without human intervention.
 
-**Core Philosophy**: Minimal code, complete functionality.
+**Core Philosophy**: Let AI operate computers like humans.
 
 ### ✨ Features
 
 | Feature | Description |
 |---------|-------------|
-| 🧠 **Fully Autonomous** | No human intervention needed, Agent plans and executes independently |
-| 🪶 **Lightweight** | Core code < 3000 lines, dependencies < 10 |
-| 🔧 **Rich Tools** | File system, Shell, Browser, Network requests |
-| 🌐 **Hybrid Browser** | Headless and real browser control support |
+| 🧠 **Fully Autonomous** | Understand, plan, execute, and verify without human intervention |
+| 🪶 **Lightweight** | Minimal code, few dependencies, fast startup |
+| 🔧 **Rich Tools** | 13+ tools covering all aspects of computer control |
+| 🖱️ **Desktop Automation** | Keyboard/mouse simulation, operate any application |
+| 📸 **Screenshot** | Full screen, region, window capture |
+| 📊 **System Monitoring** | Real-time CPU, memory, disk, network monitoring |
+| 🔄 **Process Management** | Start, stop, monitor processes |
+| 📋 **Clipboard** | Read/write clipboard content |
+| 🌐 **Network Tools** | Download, port scan, DNS lookup |
 | 🤖 **Multi-LLM Support** | OpenAI, Claude, Ollama local models |
-| 💾 **Persistent Storage** | PostgreSQL for task history and learning |
-| ⚡ **High Concurrency** | Multi-process architecture for large-scale tasks |
-| 🛡️ **Advanced Anti-Bot** | Cloudflare bypass, CAPTCHA handling |
+| 💾 **Persistent Storage** | PostgreSQL for task history |
 
 ### 📦 Installation
 
 ```bash
 # Clone repository
-git clone https://github.com/badhope/Woclaw.git
-cd woclaw
+git clone https://github.com/badhope/Xiaobai.git
+cd Xiaobai
 
 # Install dependencies
 pip install -e .
@@ -226,11 +241,29 @@ playwright install
 woclaw
 
 # Execute single task
-woclaw run "Scrape all product info from example.com"
+woclaw run "Organize my downloads folder"
 
 # Execute from config file
-woclaw run --config tasks.yaml
+woclaw run --config config.py
 ```
+
+### 🛠️ Tools
+
+| Tool | Function | Operations |
+|------|----------|------------|
+| `filesystem` | File system operations | Read, write, search, copy, move, delete |
+| `shell` | Execute system commands | Run programs, execute scripts |
+| `browser` | Browser control | Open pages, click, input, screenshot |
+| `web` | HTTP requests | API calls, web scraping |
+| `data` | Data processing | JSON/CSV read/write, filter, transform |
+| `process` | Process management | List, find, start, kill processes |
+| `clipboard` | Clipboard operations | Read, write, clear |
+| `system` | System monitoring | CPU, memory, disk, network info |
+| `network` | Network tools | Download, port scan, DNS lookup |
+| `screenshot` | Screenshot | Full screen, region, window capture |
+| `automation` | Keyboard/mouse | Simulate keys, mouse clicks, movement |
+| `archive` | Archive operations | ZIP/TAR create and extract |
+| `image` | Image processing | Resize, convert, crop, filter |
 
 ### 📄 License
 

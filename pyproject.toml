@@ -19,9 +19,9 @@ keywords = [
     "agent",
     "automation",
     "llm",
-    "web-scraping",
-    "browser-automation",
     "autonomous",
+    "computer-control",
+    "desktop-automation",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -45,6 +45,11 @@ dependencies = [
     "aiohttp>=3.8.0",
     "asyncpg>=0.28.0",
     "playwright>=1.40.0",
+    "psutil>=5.9.0",
+    "pyperclip>=1.8.0",
+    "Pillow>=10.0.0",
+    "pyautogui>=0.9.54",
+    "pygetwindow>=0.0.9",
 ]
 
 [project.optional-dependencies]
@@ -66,11 +71,11 @@ dev = [
 woclaw = "woclaw.cli:cli"
 
 [project.urls]
-Homepage = "https://github.com/badhope/Woclaw"
-Documentation = "https://github.com/badhope/Woclaw#readme"
-Repository = "https://github.com/badhope/Woclaw.git"
-Issues = "https://github.com/badhope/Woclaw/issues"
-Changelog = "https://github.com/badhope/Woclaw/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/badhope/Xiaobai"
+Documentation = "https://github.com/badhope/Xiaobai#readme"
+Repository = "https://github.com/badhope/Xiaobai.git"
+Issues = "https://github.com/badhope/Xiaobai/issues"
+Changelog = "https://github.com/badhope/Xiaobai/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -98,17 +103,17 @@ exclude = '''
 line-length = 100
 target-version = "py310"
 select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings
-    "F",   # Pyflakes
-    "I",   # isort
-    "B",   # flake8-bugbear
-    "C4",  # flake8-comprehensions
-    "UP",  # pyupgrade
+    "E",
+    "W",
+    "F",
+    "I",
+    "B",
+    "C4",
+    "UP",
 ]
 ignore = [
-    "E501",  # line too long (handled by black)
-    "B008",  # do not perform function calls in argument defaults
+    "E501",
+    "B008",
 ]
 
 [tool.mypy]
