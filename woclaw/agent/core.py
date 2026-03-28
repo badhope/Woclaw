@@ -80,25 +80,21 @@ class Agent:
         """
         理解任务意图和上下文
         """
-        prompt = f"""分析以下任务，提取关键信息：
-        
-任务: {task}
-
-请返回 JSON 格式:
-{{
-    "task_type": "任务类型",
-    "required_tools": ["需要的工具列表"],
-    "expected_output": "预期输出",
-    "potential_risks": ["潜在风险"]
-}}
-"""
-        return await self.llm.generate(prompt)
+        return {
+            "task": task,
+            "task_type": "user_request",
+            "required_tools": [],
+            "expected_output": "完成用户请求的任务",
+            "potential_risks": []
+        }
     
     async def _verify(self, result: Any) -> Any:
         """
         验证执行结果
         """
-        return result
+        if isinstance(result, dict):
+            return result
+        return {"result": result}
     
     def run_sync(self, task: str) -> TaskResult:
         """

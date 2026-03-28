@@ -48,56 +48,6 @@ Woclaw:
 | 📋 **剪贴板** | 读写剪贴板内容 |
 | 🌐 **网络工具** | 下载、端口扫描、DNS 查询 |
 | 🤖 **多 LLM 支持** | OpenAI、Claude、Ollama 本地模型 |
-| 💾 **持久存储** | PostgreSQL 存储任务历史 |
-
-### 🏗️ 架构
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Woclaw Agent                            │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                    Agent Core                            │   │
-│  │  ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐  │   │
-│  │  │ 理解    │ → │ 规划    │ → │ 执行    │ → │ 验证    │  │   │
-│  │  │Understand│   │ Plan    │   │ Execute │   │ Verify  │  │   │
-│  │  └─────────┘   └─────────┘   └─────────┘   └─────────┘  │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                              ↓                                  │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                    Tool Layer (13+ 工具)                 │   │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │   │
-│  │  │FileSystem│ │  Shell   │ │ Browser  │ │   Web    │    │   │
-│  │  │ 文件系统  │ │ 命令执行 │ │ 浏览器   │ │ 网络请求 │    │   │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │   │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │   │
-│  │  │ Process  │ │Clipboard │ │ System   │ │ Network  │    │   │
-│  │  │ 进程管理  │ │ 剪贴板   │ │ 系统监控 │ │ 网络工具 │    │   │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │   │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐    │   │
-│  │  │Screenshot│ │Automation│ │ Archive  │ │  Image   │    │   │
-│  │  │ 截图     │ │ 键盘鼠标 │ │ 压缩解压 │ │ 图像处理 │    │   │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘    │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                              ↓                                  │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                    LLM Interface                         │   │
-│  │  ┌─────────┐   ┌─────────┐   ┌─────────┐                │   │
-│  │  │ OpenAI  │   │ Claude  │   │  Ollama │   ...          │   │
-│  │  └─────────┘   └─────────┘   └─────────┘                │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                              ↓                                  │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                    Storage Layer                         │   │
-│  │  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐    │   │
-│  │  │ PostgreSQL  │   │   Cache     │   │ File Index  │    │   │
-│  │  │ 任务历史    │   │   缓存      │   │ 文件索引    │    │   │
-│  │  └─────────────┘   └─────────────┘   └─────────────┘    │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
 
 ### 📦 安装
 
@@ -106,84 +56,151 @@ Woclaw:
 git clone https://github.com/badhope/Xiaobai.git
 cd Xiaobai
 
+# 创建虚拟环境 (推荐)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或
+venv\Scripts\activate  # Windows
+
 # 安装依赖
 pip install -e .
 
-# 安装浏览器驱动
+# 安装浏览器驱动 (用于 browser 工具)
 playwright install
+
+# 安装 LLM 提供者 (选择一个或多个)
+pip install openai        # OpenAI
+pip install anthropic     # Claude
+# Ollama 无需额外安装，只需本地运行 Ollama 服务
+```
+
+### ⚙️ 配置
+
+```bash
+# 复制配置模板
+cp config.example.py config.py
+
+# 编辑配置文件，填入你的 API Key
+# Windows
+notepad config.py
+# Mac/Linux
+nano config.py
+```
+
+配置示例：
+
+```python
+from woclaw import Config
+
+# OpenAI
+config = Config(
+    llm={
+        "provider": "openai",
+        "model": "gpt-4",
+        "api_key": "sk-your-api-key",
+    }
+)
+
+# 或 Claude
+config = Config(
+    llm={
+        "provider": "claude",
+        "model": "claude-3-opus-20240229",
+        "api_key": "sk-ant-your-api-key",
+    }
+)
+
+# 或 Ollama 本地模型 (免费)
+config = Config(
+    llm={
+        "provider": "ollama",
+        "model": "llama2",
+        "base_url": "http://localhost:11434",
+    }
+)
 ```
 
 ### 🚀 快速开始
 
 ```bash
-# 启动交互模式
+# 方式1: 交互模式 (推荐)
 woclaw
 
-# 执行单个任务
+# 方式2: 执行单个任务
 woclaw run "帮我整理下载文件夹"
 
-# 从配置文件执行
+# 方式3: 使用配置文件
 woclaw run --config config.py
-```
 
-### ⚙️ 配置
+# 查看可用工具
+woclaw tools
 
-```python
-# config.py
-from woclaw import Config
-
-config = Config(
-    llm={
-        "provider": "openai",
-        "model": "gpt-4",
-        "api_key": "your-api-key",
-    },
-    database={
-        "host": "localhost",
-        "port": 5432,
-        "database": "woclaw",
-        "user": "postgres",
-        "password": "password",
-    },
-    concurrency={
-        "max_workers": 4,
-        "task_timeout": 300,
-    },
-)
+# 查看当前配置
+woclaw config
 ```
 
 ### 🛠️ 工具列表
 
 | 工具 | 功能 | 操作 |
 |------|------|------|
-| `filesystem` | 文件系统操作 | 读写、搜索、复制、移动、删除 |
-| `shell` | 执行系统命令 | 运行程序、脚本执行 |
-| `browser` | 浏览器控制 | 打开网页、点击、输入、截图 |
-| `web` | HTTP 请求 | API 调用、网页抓取 |
-| `data` | 数据处理 | JSON/CSV 读写、过滤、转换 |
-| `process` | 进程管理 | 列出、查找、启动、终止进程 |
-| `clipboard` | 剪贴板操作 | 读取、写入、清空 |
-| `system` | 系统监控 | CPU、内存、磁盘、网络信息 |
-| `network` | 网络工具 | 下载、端口扫描、DNS 查询 |
-| `screenshot` | 截图 | 全屏、区域、窗口截图 |
-| `automation` | 键盘鼠标 | 模拟按键、鼠标点击、移动 |
-| `archive` | 压缩解压 | ZIP/TAR 创建和解压 |
-| `image` | 图像处理 | 调整大小、格式转换、裁剪、滤镜 |
+| `filesystem` | 文件系统操作 | read, write, copy, move, delete, list, search |
+| `shell` | 执行系统命令 | run |
+| `browser` | 浏览器控制 | navigate, click, type, screenshot, content |
+| `web` | HTTP 请求 | get, post, download |
+| `data` | 数据处理 | read_json, write_json, read_csv, write_csv |
+| `process` | 进程管理 | list, find, start, kill |
+| `clipboard` | 剪贴板操作 | read, write, clear |
+| `system` | 系统监控 | info, cpu, memory, disk, network, battery |
+| `network` | 网络工具 | download, dns, port_scan, ping |
+| `screenshot` | 截图 | full, region, window |
+| `automation` | 键盘鼠标 | key_press, key_hotkey, mouse_click, mouse_move |
+| `archive` | 压缩解压 | compress, extract |
+| `image` | 图像处理 | resize, convert, crop, filter |
 
 ### 📊 使用示例
 
-```python
-# 示例：自动整理文件
+```bash
+# 文件整理
 woclaw run "把下载文件夹里的图片按日期整理到 Pictures"
 
-# 示例：批量处理
+# 批量处理
 woclaw run "把所有 PDF 转成图片，然后压缩成 ZIP"
 
-# 示例：系统监控
-woclaw run "监控 CPU 使用率，超过 80% 时发通知"
+# 系统监控
+woclaw run "查看当前系统 CPU 和内存使用情况"
 
-# 示例：自动化操作
+# 网络操作
+woclaw run "下载 https://example.com/file.zip 到下载文件夹"
+
+# 自动化操作
 woclaw run "打开记事本，输入今天的日期，保存到桌面"
+
+# 浏览器操作
+woclaw run "打开百度搜索 Python 教程，截图保存"
+```
+
+### 🏗️ 架构
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Woclaw Agent                            │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    Agent Core                            │   │
+│  │  ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐  │   │
+│  │  │ 理解    │ → │ 规划    │ → │ 执行    │ → │ 验证    │  │   │
+│  │  └─────────┘   └─────────┘   └─────────┘   └─────────┘  │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              ↓                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    Tool Layer (13+ 工具)                 │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              ↓                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │                    LLM Interface                         │   │
+│  │         OpenAI  |  Claude  |  Ollama  |  ...            │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### 🤝 贡献
@@ -204,22 +221,6 @@ Woclaw is a fully autonomous computer control agent. It can understand user comm
 
 **Core Philosophy**: Let AI operate computers like humans.
 
-### ✨ Features
-
-| Feature | Description |
-|---------|-------------|
-| 🧠 **Fully Autonomous** | Understand, plan, execute, and verify without human intervention |
-| 🪶 **Lightweight** | Minimal code, few dependencies, fast startup |
-| 🔧 **Rich Tools** | 13+ tools covering all aspects of computer control |
-| 🖱️ **Desktop Automation** | Keyboard/mouse simulation, operate any application |
-| 📸 **Screenshot** | Full screen, region, window capture |
-| 📊 **System Monitoring** | Real-time CPU, memory, disk, network monitoring |
-| 🔄 **Process Management** | Start, stop, monitor processes |
-| 📋 **Clipboard** | Read/write clipboard content |
-| 🌐 **Network Tools** | Download, port scan, DNS lookup |
-| 🤖 **Multi-LLM Support** | OpenAI, Claude, Ollama local models |
-| 💾 **Persistent Storage** | PostgreSQL for task history |
-
 ### 📦 Installation
 
 ```bash
@@ -227,23 +228,38 @@ Woclaw is a fully autonomous computer control agent. It can understand user comm
 git clone https://github.com/badhope/Xiaobai.git
 cd Xiaobai
 
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate  # Windows
+
 # Install dependencies
 pip install -e .
 
 # Install browser drivers
 playwright install
+
+# Install LLM provider
+pip install openai  # or anthropic
+```
+
+### ⚙️ Configuration
+
+```bash
+cp config.example.py config.py
+# Edit config.py and add your API key
 ```
 
 ### 🚀 Quick Start
 
 ```bash
-# Start interactive mode
+# Interactive mode
 woclaw
 
 # Execute single task
 woclaw run "Organize my downloads folder"
 
-# Execute from config file
+# Use config file
 woclaw run --config config.py
 ```
 
@@ -251,19 +267,19 @@ woclaw run --config config.py
 
 | Tool | Function | Operations |
 |------|----------|------------|
-| `filesystem` | File system operations | Read, write, search, copy, move, delete |
-| `shell` | Execute system commands | Run programs, execute scripts |
-| `browser` | Browser control | Open pages, click, input, screenshot |
-| `web` | HTTP requests | API calls, web scraping |
-| `data` | Data processing | JSON/CSV read/write, filter, transform |
-| `process` | Process management | List, find, start, kill processes |
-| `clipboard` | Clipboard operations | Read, write, clear |
-| `system` | System monitoring | CPU, memory, disk, network info |
-| `network` | Network tools | Download, port scan, DNS lookup |
-| `screenshot` | Screenshot | Full screen, region, window capture |
-| `automation` | Keyboard/mouse | Simulate keys, mouse clicks, movement |
-| `archive` | Archive operations | ZIP/TAR create and extract |
-| `image` | Image processing | Resize, convert, crop, filter |
+| `filesystem` | File operations | read, write, copy, move, delete, list, search |
+| `shell` | Execute commands | run |
+| `browser` | Browser control | navigate, click, type, screenshot, content |
+| `web` | HTTP requests | get, post, download |
+| `data` | Data processing | read_json, write_json, read_csv, write_csv |
+| `process` | Process management | list, find, start, kill |
+| `clipboard` | Clipboard operations | read, write, clear |
+| `system` | System monitoring | info, cpu, memory, disk, network |
+| `network` | Network tools | download, dns, port_scan, ping |
+| `screenshot` | Screenshot | full, region, window |
+| `automation` | Keyboard/mouse | key_press, key_hotkey, mouse_click, mouse_move |
+| `archive` | Archive operations | compress, extract |
+| `image` | Image processing | resize, convert, crop, filter |
 
 ### 📄 License
 
