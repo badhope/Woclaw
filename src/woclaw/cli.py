@@ -20,6 +20,7 @@ from . import BRAND, __version__
 from .supervisor.agent import Supervisor
 from .workers import FileWorker, GuiWorker, ShellWorker, WebWorker, SysWorker
 from .llm.registry import LLMRegistry
+from .skills.manager import SkillManager
 
 
 console = Console()
@@ -274,6 +275,162 @@ def init():
     console.print("   1. 运行 'woclaw chat' 开始对话")
     console.print("   2. 运行 'woclaw config' 查看配置选项")
     console.print("   3. 或直接告诉星灵你想做什么~")
+
+
+@cli.group()
+def skill():
+    """
+    技能管理
+
+    示例：
+        woclaw skill search file
+        woclaw skill install file-organizer
+        woclaw skill list
+    """
+    pass
+
+
+@skill.command()
+@click.argument("keyword", required=False)
+def search(keyword: str = ""):
+    """
+    搜索技能
+
+    示例：
+        woclaw skill search file
+        woclaw skill search
+    """
+    async def _search():
+        manager = SkillManager()
+        console.print("\n✨ 正在搜索技能...\n")
+
+        results = await manager.search(keyword)
+
+        if not results:
+            console.print("❌ 未找到匹配的技能\n")
+            return
+
+        table = Table(title=f"✨ 搜索结果 ({len(results)} 个)")
+        table.add_column("技能名", style="cyan")
+        table.add_column("描述", style="white")
+        table.add_column("分类", style="yellow")
+        table.add_column("状态", style="green")
+
+        for skill in results:
+            status = "✅ 已安装" if skill.installed else "⬜ 未安装"
+            table.add_row(skill.name, skill.description, skill.category, status)
+
+        console.print(table)
+
+    asyncio.run(_search())
+
+
+@skill.command()
+@click.argument("skill_name")
+def install(skill_name: str):
+    """
+    安装技能
+
+    示例：
+        woclaw skill install file-organizer
+        woclaw skill install badhope/ai-skill/file-organizer
+        woclaw skill install https://github.com/user/repo
+    """
+    async def _install():
+        manager = SkillManager()
+        console.print(f"\n✨ 正在安装技能: {skill_name}\n")
+
+        result = await manager.install(skill_name)
+
+        if result.get("success"):
+            console.print(f"✅ 安装成功！\n")
+            if "skill" in result:
+                console.print(f"   技能: {result['skill']}")
+            if "skills" in result:
+                console.print(f"   已安装: {', '.join(result['skills'])}")
+            if "path" in result:
+                console.print(f"   路径: {result['path']}")
+        else:
+            console.print(f"❌ 安装失败: {result.get('error', '未知错误')}\n")
+
+    asyncio.run(_install())
+
+
+@skill.command()
+def list():
+    """
+    列出已安装的技能
+    """
+    manager = SkillManager()
+    installed = manager.list_installed()
+
+    if not installed:
+        console.print("\n⬜ 暂无已安装的技能\n")
+        console.print("💡 运行 'woclaw skill search' 查找技能")
+        console.print("   运行 'woclaw skill install <name>' 安装技能\n")
+        return
+
+    console.print(f"\n✨ 已安装的技能 ({len(installed)} 个)\n")
+
+    table = Table(title="✨ 技能列表")
+    table.add_column("技能名", style="cyan")
+    table.add_column("版本", style="yellow")
+    table.add_column("描述", style="white")
+    table.add_column("分类", style="green")
+
+    for skill in installed:
+        table.add_row(skill.name, skill.version, skill.description, skill.category)
+
+    console.print(table)
+
+
+@skill.command()
+@click.argument("skill_name")
+@click.argument("args", nargs=-1)
+def run(skill_name: str, args):
+    """
+    运行技能
+
+    示例：
+        woclaw skill run file-organizer --directory ~/Downloads
+        woclaw skill run habit-tracker --list
+    """
+    async def _run():
+        manager = SkillManager()
+        console.print(f"\n✨ 正在运行技能: {skill_name}\n")
+
+        result = await manager.run(skill_name, list(args))
+
+        if result.get("success"):
+            if result.get("stdout"):
+                console.print(result["stdout"])
+        else:
+            console.print(f"❌ 执行失败: {result.get('error', '未知错误')}\n")
+            if result.get("stderr"):
+                console.print(f"错误信息: {result['stderr']}")
+
+    asyncio.run(_run())
+
+
+@skill.command()
+@click.argument("skill_name")
+def uninstall(skill_name: str):
+    """
+    卸载技能
+
+    示例：
+        woclaw skill uninstall file-organizer
+    """
+    manager = SkillManager()
+
+    if Confirm.ask(f"\n确定要卸载技能 '{skill_name}' 吗？"):
+        result = manager.uninstall(skill_name)
+        if result.get("success"):
+            console.print(f"✅ 已卸载\n")
+        else:
+            console.print(f"❌ 卸载失败: {result.get('error')}\n")
+    else:
+        console.print("已取消\n")
 
 
 async def interactive_mode(supervisor: Supervisor):
