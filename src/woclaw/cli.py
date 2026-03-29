@@ -19,6 +19,8 @@ from rich.table import Table
 from . import BRAND, __version__
 from .supervisor.agent import Supervisor
 from .workers import FileWorker, GuiWorker, ShellWorker, WebWorker, SysWorker
+from .workers.browser_worker import BrowserWorker
+from .workers.code_worker import CodeWorker
 from .llm.registry import LLMRegistry
 from .skills.manager import SkillManager
 
@@ -28,16 +30,16 @@ console = Console()
 
 def print_banner():
     """打印品牌 Banner"""
-    banner = f"""
+    banner = """
 ✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨
 
         ╔═══════════════════════════════════════╗
         ║                                       ║
         ║   🌟 Woclaw - 启明星 AI 助手 🌟      ║
         ║                                       ║
-        ║   {BRAND['slogan']}   ║
+        ║   让启明星照亮你的电脑世界            ║
         ║                                       ║
-        ║   版本: {__version__}                       ║
+        ║   版本: """ + __version__ + """                       ║
         ║   类型: 轻量级自主电脑控制智能体         ║
         ║                                       ║
         ╚═══════════════════════════════════════╝
@@ -54,17 +56,16 @@ def print_star():
 
 async def init_supervisor(config: dict = None) -> Supervisor:
     """初始化 Supervisor"""
-    # 默认配置
     if config is None:
         config = {
             "llm": {
                 "provider": os.getenv("WOCLAW_LLM", "ollama"),
                 "model": os.getenv("WOCLAW_MODEL", "llama3.2"),
                 "api_key": os.getenv("OPENAI_API_KEY", ""),
+                "base_url": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
             }
         }
 
-    # 创建 Supervisor
     supervisor = Supervisor(config)
 
     # 注册 Workers
@@ -73,8 +74,9 @@ async def init_supervisor(config: dict = None) -> Supervisor:
     supervisor.register_worker("gui_worker", GuiWorker())
     supervisor.register_worker("web_worker", WebWorker())
     supervisor.register_worker("sys_worker", SysWorker())
+    supervisor.register_worker("browser_worker", BrowserWorker())
+    supervisor.register_worker("code_worker", CodeWorker())
 
-    # 加载学习记忆
     await supervisor.load_learnings()
 
     return supervisor
@@ -83,11 +85,7 @@ async def init_supervisor(config: dict = None) -> Supervisor:
 @click.group()
 @click.version_option(version=__version__, prog_name="Woclaw")
 def cli():
-    """
-    🌟 Woclaw - 启明星 AI 助手
-
-    轻量级自主电脑控制智能体，让 AI 像启明星一样为你指引方向。
-    """
+    """🌟 Woclaw - 启明星 AI 助手"""
     pass
 
 
@@ -96,13 +94,7 @@ def cli():
 @click.option("--model", "-m", help="使用的模型")
 @click.option("--no-stream", is_flag=True, help="禁用流式输出")
 def run(task: Optional[str], model: Optional[str], no_stream: bool):
-    """
-    执行任务
-
-    示例：
-        woclaw run "帮我整理下载文件夹"
-        woclaw run "查看系统信息"
-    """
+    """执行任务"""
     print_banner()
 
     async def _run():
@@ -115,10 +107,8 @@ def run(task: Optional[str], model: Optional[str], no_stream: bool):
             console.print(f"星灵已就绪！使用模型: {supervisor.llm.__class__.__name__}\n")
 
             if task:
-                # 执行单个任务
                 await execute_task(supervisor, task, stream=not no_stream)
             else:
-                # 交互模式
                 await interactive_mode(supervisor)
 
         except Exception as e:
@@ -133,24 +123,16 @@ def run(task: Optional[str], model: Optional[str], no_stream: bool):
 
 @cli.command()
 def chat():
-    """
-    启动交互式聊天
-
-    示例：
-        woclaw chat
-    """
+    """启动交互式聊天"""
     print_banner()
 
     async def _chat():
         try:
             supervisor = await init_supervisor()
-
             print_star()
-            console.print(f"星灵已上线！开始聊天吧~\n")
+            console.print("星灵已上线！开始聊天吧~\n")
             console.print("输入 'exit' 或 'quit' 退出\n")
-
             await interactive_mode(supervisor)
-
         except Exception as e:
             console.print(f"\n❌ 启动失败: {str(e)}", style="red bold")
 
@@ -159,16 +141,11 @@ def chat():
 
 @cli.command()
 def status():
-    """
-    查看状态
-
-    显示当前配置和系统信息
-    """
+    """查看状态"""
     async def _status():
         try:
             supervisor = await init_supervisor()
 
-            # 显示状态
             table = Table(title="✨ Woclaw 状态")
             table.add_column("项目", style="cyan")
             table.add_column("值", style="green")
@@ -180,7 +157,6 @@ def status():
 
             console.print(table)
 
-            # 显示学习统计
             stats = supervisor.memory.get_stats()
             if stats["total_learnings"] > 0:
                 console.print(f"\n📚 学习统计：")
@@ -196,9 +172,7 @@ def status():
 
 @cli.command()
 def config():
-    """
-    查看/设置配置
-    """
+    """查看/设置配置"""
     console.print("\n✨ Woclaw 配置指南\n")
 
     table = Table(title="环境变量配置")
@@ -211,6 +185,7 @@ def config():
         ("WOCLAW_MODEL", "模型名称", "llama3.2, gpt-4o, deepseek-chat"),
         ("OPENAI_API_KEY", "OpenAI API Key", "sk-..."),
         ("ANTHROPIC_API_KEY", "Claude API Key", "sk-ant-..."),
+        ("DEEPSEEK_API_KEY", "DeepSeek API Key", "sk-..."),
         ("OLLAMA_BASE_URL", "Ollama 地址", "http://localhost:11434"),
     ]
 
@@ -218,7 +193,6 @@ def config():
         table.add_row(*config)
 
     console.print(table)
-
     console.print("\n💡 快速配置：")
     console.print("   # 设置使用 OpenAI")
     console.print("   $env:WOCLAW_LLM = 'openai'")
@@ -227,9 +201,7 @@ def config():
 
 @cli.command()
 def tools():
-    """
-    查看可用工具
-    """
+    """查看可用工具"""
     async def _tools():
         try:
             supervisor = await init_supervisor()
@@ -250,188 +222,190 @@ def tools():
 
 @cli.command()
 def init():
-    """
-    初始化 Woclaw
-
-    创建默认配置和目录结构
-    """
+    """初始化 Woclaw"""
     print_banner()
-
     console.print("✨ 正在初始化 Woclaw...\n")
 
-    # 创建配置目录
     config_dir = Path.home() / ".woclaw"
     config_dir.mkdir(exist_ok=True)
 
-    # 创建学习目录
     learn_dir = config_dir / ".learnings"
     learn_dir.mkdir(exist_ok=True)
 
+    skills_dir = config_dir / "skills"
+    skills_dir.mkdir(exist_ok=True)
+
     console.print(f"✅ 配置目录: {config_dir}")
     console.print(f"✅ 学习目录: {learn_dir}")
+    console.print(f"✅ 技能目录: {skills_dir}")
 
     console.print("\n✨ 初始化完成！")
     console.print("\n💡 接下来：")
     console.print("   1. 运行 'woclaw chat' 开始对话")
     console.print("   2. 运行 'woclaw config' 查看配置选项")
-    console.print("   3. 或直接告诉星灵你想做什么~")
+    console.print("   3. 运行 'woclaw skill list' 查看可用技能")
 
+
+# ==================== Skill 命令 ====================
 
 @cli.group()
 def skill():
-    """
-    技能管理
-
-    示例：
-        woclaw skill search file
-        woclaw skill install file-organizer
-        woclaw skill list
-    """
+    """技能管理"""
     pass
 
 
-@skill.command()
-@click.argument("keyword", required=False)
-def search(keyword: str = ""):
-    """
-    搜索技能
-
-    示例：
-        woclaw skill search file
-        woclaw skill search
-    """
-    async def _search():
+@skill.command("list")
+def skill_list():
+    """列出可用技能"""
+    async def _list():
         manager = SkillManager()
-        console.print("\n✨ 正在搜索技能...\n")
+        
+        # 搜索所有技能
+        skills = await manager.search()
+        
+        if skills:
+            console.print("\n📦 官方技能仓库\n")
+            table = Table()
+            table.add_column("名称", style="cyan")
+            table.add_column("描述", style="white")
+            table.add_column("分类", style="green")
+            table.add_column("状态", style="yellow")
+            
+            for s in skills:
+                status = "✅ 已安装" if s.installed else "⬜ 未安装"
+                table.add_row(s.name, s.description[:40], s.category, status)
+                
+            console.print(table)
+        else:
+            console.print("\n⚠️ 无法获取技能列表，请检查网络连接")
+            
+        # 列出已安装
+        installed = manager.list_installed()
+        if installed:
+            console.print(f"\n📦 已安装技能 ({len(installed)})\n")
+            for s in installed:
+                console.print(f"  ✅ {s.name} - {s.description}")
+                
+    asyncio.run(_list())
 
-        results = await manager.search(keyword)
 
-        if not results:
-            console.print("❌ 未找到匹配的技能\n")
-            return
-
-        table = Table(title=f"✨ 搜索结果 ({len(results)} 个)")
-        table.add_column("技能名", style="cyan")
-        table.add_column("描述", style="white")
-        table.add_column("分类", style="yellow")
-        table.add_column("状态", style="green")
-
-        for skill in results:
-            status = "✅ 已安装" if skill.installed else "⬜ 未安装"
-            table.add_row(skill.name, skill.description, skill.category, status)
-
-        console.print(table)
-
-    asyncio.run(_search())
-
-
-@skill.command()
-@click.argument("skill_name")
-def install(skill_name: str):
-    """
-    安装技能
-
-    示例：
-        woclaw skill install file-organizer
-        woclaw skill install badhope/ai-skill/file-organizer
-        woclaw skill install https://github.com/user/repo
-    """
+@skill.command("install")
+@click.argument("name")
+def skill_install(name: str):
+    """安装技能"""
     async def _install():
         manager = SkillManager()
-        console.print(f"\n✨ 正在安装技能: {skill_name}\n")
-
-        result = await manager.install(skill_name)
-
+        result = await manager.install(name)
+        
         if result.get("success"):
-            console.print(f"✅ 安装成功！\n")
-            if "skill" in result:
-                console.print(f"   技能: {result['skill']}")
-            if "skills" in result:
-                console.print(f"   已安装: {', '.join(result['skills'])}")
-            if "path" in result:
-                console.print(f"   路径: {result['path']}")
+            console.print(f"\n✅ 技能安装成功: {result.get('skill', name)}\n")
         else:
-            console.print(f"❌ 安装失败: {result.get('error', '未知错误')}\n")
-
+            console.print(f"\n❌ 安装失败: {result.get('error', '未知错误')}\n")
+            
     asyncio.run(_install())
 
 
-@skill.command()
-def list():
-    """
-    列出已安装的技能
-    """
-    manager = SkillManager()
-    installed = manager.list_installed()
-
-    if not installed:
-        console.print("\n⬜ 暂无已安装的技能\n")
-        console.print("💡 运行 'woclaw skill search' 查找技能")
-        console.print("   运行 'woclaw skill install <name>' 安装技能\n")
-        return
-
-    console.print(f"\n✨ 已安装的技能 ({len(installed)} 个)\n")
-
-    table = Table(title="✨ 技能列表")
-    table.add_column("技能名", style="cyan")
-    table.add_column("版本", style="yellow")
-    table.add_column("描述", style="white")
-    table.add_column("分类", style="green")
-
-    for skill in installed:
-        table.add_row(skill.name, skill.version, skill.description, skill.category)
-
-    console.print(table)
-
-
-@skill.command()
-@click.argument("skill_name")
+@skill.command("run")
+@click.argument("name")
 @click.argument("args", nargs=-1)
-def run(skill_name: str, args):
-    """
-    运行技能
-
-    示例：
-        woclaw skill run file-organizer --directory ~/Downloads
-        woclaw skill run habit-tracker --list
-    """
+def skill_run(name: str, args: tuple):
+    """运行技能"""
     async def _run():
         manager = SkillManager()
-        console.print(f"\n✨ 正在运行技能: {skill_name}\n")
-
-        result = await manager.run(skill_name, list(args))
-
+        result = await manager.run(name, list(args))
+        
         if result.get("success"):
-            if result.get("stdout"):
-                console.print(result["stdout"])
+            console.print(result.get("stdout", ""))
         else:
-            console.print(f"❌ 执行失败: {result.get('error', '未知错误')}\n")
-            if result.get("stderr"):
-                console.print(f"错误信息: {result['stderr']}")
-
+            console.print(f"\n❌ 执行失败: {result.get('error', '未知错误')}\n")
+            
     asyncio.run(_run())
 
 
-@skill.command()
-@click.argument("skill_name")
-def uninstall(skill_name: str):
-    """
-    卸载技能
-
-    示例：
-        woclaw skill uninstall file-organizer
-    """
+@skill.command("uninstall")
+@click.argument("name")
+def skill_uninstall(name: str):
+    """卸载技能"""
     manager = SkillManager()
-
-    if Confirm.ask(f"\n确定要卸载技能 '{skill_name}' 吗？"):
-        result = manager.uninstall(skill_name)
-        if result.get("success"):
-            console.print(f"✅ 已卸载\n")
-        else:
-            console.print(f"❌ 卸载失败: {result.get('error')}\n")
+    result = manager.uninstall(name)
+    
+    if result.get("success"):
+        console.print(f"\n✅ 技能已卸载: {name}\n")
     else:
-        console.print("已取消\n")
+        console.print(f"\n❌ 卸载失败: {result.get('error', '未知错误')}\n")
 
+
+@skill.command("search")
+@click.argument("keyword", required=False)
+def skill_search(keyword: Optional[str]):
+    """搜索技能"""
+    async def _search():
+        manager = SkillManager()
+        skills = await manager.search(keyword or "")
+        
+        if skills:
+            console.print(f"\n🔍 搜索结果 ({len(skills)} 个)\n")
+            for s in skills:
+                console.print(f"  • {s.name} - {s.description}")
+        else:
+            console.print("\n未找到匹配的技能\n")
+            
+    asyncio.run(_search())
+
+
+# ==================== Gateway 命令 ====================
+
+@cli.group()
+def gateway():
+    """消息网关管理"""
+    pass
+
+
+@gateway.command("start")
+@click.option("--wechat", is_flag=True, help="启动微信网关")
+@click.option("--dingtalk", is_flag=True, help="启动钉钉网关")
+@click.option("--feishu", is_flag=True, help="启动飞书网关")
+@click.option("--telegram", is_flag=True, help="启动 Telegram 网关")
+@click.option("--all", "all_gateways", is_flag=True, help="启动所有网关")
+def gateway_start(wechat: bool, dingtalk: bool, feishu: bool, telegram: bool, all_gateways: bool):
+    """启动消息网关"""
+    async def _start():
+        from ..gateway import MessageHub, WechatGateway, DingtalkGateway, FeishuGateway, TelegramGateway
+        
+        supervisor = await init_supervisor()
+        hub = MessageHub(supervisor)
+        
+        if all_gateways or wechat:
+            hub.register_gateway("wechat", WechatGateway())
+        if all_gateways or dingtalk:
+            hub.register_gateway("dingtalk", DingtalkGateway())
+        if all_gateways or feishu:
+            hub.register_gateway("feishu", FeishuGateway())
+        if all_gateways or telegram:
+            hub.register_gateway("telegram", TelegramGateway())
+            
+        results = await hub.start_all()
+        
+        console.print("\n✨ 消息网关启动结果：\n")
+        for name, success in results.items():
+            status = "✅ 已启动" if success else "❌ 失败"
+            console.print(f"  {name}: {status}")
+            
+        if any(results.values()):
+            console.print("\n✨ 网关已就绪，等待消息...\n")
+            console.print("按 Ctrl+C 退出\n")
+            
+            try:
+                while True:
+                    await asyncio.sleep(1)
+            except KeyboardInterrupt:
+                await hub.stop_all()
+                console.print("\n✨ 网关已停止\n")
+                
+    asyncio.run(_start())
+
+
+# ==================== 辅助函数 ====================
 
 async def interactive_mode(supervisor: Supervisor):
     """交互模式"""
@@ -469,16 +443,13 @@ async def execute_task(supervisor: Supervisor, task: str, stream: bool = True):
 
         if result.output:
             if isinstance(result.output, str):
-                # 文本输出
                 console.print(Panel(result.output, title="✨ 星灵回复", border_style="green"))
             elif isinstance(result.output, dict):
-                # 字典输出
                 if "content" in result.output:
                     console.print(Panel(result.output["content"], title="✨ 星灵回复", border_style="green"))
                 else:
                     console.print(result.output)
             elif isinstance(result.output, list):
-                # 列表输出
                 for item in result.output:
                     if isinstance(item, dict):
                         if "result" in item:
