@@ -42,21 +42,62 @@
 | 💬 **多平台支持** | CLI、微信、钉钉、飞书... |
 | 🌐 **国际化** | 支持中文、English、日语 |
 
-## 🚀 快速开始
+## 🚀 一键安装
+
+### Windows 用户（推荐）
+
+打开 **PowerShell**，复制粘贴这一行命令：
+
+```powershell
+irm https://raw.githubusercontent.com/badhope/Woclaw/main/scripts/install.ps1 | iex
+```
+
+**就是这么简单！** 脚本会自动：
+- ✅ 安装 Python（如果没有）
+- ✅ 安装 Ollama 本地模型（如果没有）
+- ✅ 安装 Woclaw 和所有依赖
+- ✅ 创建桌面快捷方式
+- ✅ 自动配置，开箱即用
+
+**2-5 分钟后，双击桌面的 Woclaw 图标即可开始使用！**
+
+---
+
+### 其他安装方式
+
+<details>
+<summary>📦 手动安装（适合开发者）</summary>
+
+```bash
+git clone https://github.com/badhope/Woclaw.git
+cd Woclaw
+pip install -e .
+woclaw chat
+```
+
+</details>
+
+<details>
+<summary>🐳 Docker 安装</summary>
+
+```bash
+docker build -t woclaw .
+docker run -it woclaw chat
+```
+
+</details>
+
+---
 
 ### 环境要求
 
-- Python 3.10+
-- Windows 10/11（主要支持平台）
-- 2GB+ RAM
-- 500MB 可用磁盘空间
-
-### 一键安装（Windows 推荐）
-
-```powershell
-# PowerShell 管理员模式运行
-iwr https://raw.githubusercontent.com/badhope/Woclaw/main/scripts/install.ps1 -UseBasicParsing | iex
-```
+| 项目 | 要求 |
+|------|------|
+| 系统 | Windows 10/11（主要支持）|
+| Python | 3.10+（自动安装）|
+| 内存 | 4GB+ RAM |
+| 磁盘 | 1GB 可用空间 |
+| 模型 | Ollama（自动安装）或 API Key |
 
 ### 手动安装
 
