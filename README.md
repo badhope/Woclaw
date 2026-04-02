@@ -1,72 +1,110 @@
-# Woclaw - 启明星 AI 助手 🌟
+<!-- Powered by AI Agent -->
+<!-- Sponsored by OpenClaw -->
 
-> **让 AI 像启明星一样，在黑暗中为你指引方向**
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=50&duration=4000&pause=1000&color=FFD700&background=0F0F23&center=true&vCenter=true&multiline=true&width=900&height=100&lines=Woclaw%20~%20Your%20AI%20Desktop%20Assistant" alt="Woclaw - AI Desktop Assistant">
+</p>
 
-[English](docs/en.md) | [中文](docs/index.md) | [日本語](docs/ja.md)
+<p align="center">
+  <a href="https://github.com/badhope/Woclaw">
+    <img src="https://img.shields.io/badge/Version-v0.3.0--alpha-FFD700?style=for-the-badge" alt="Version">
+  </a>
+  <a href="https://github.com/badhope/Woclaw/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+  </a>
+  <a href="https://www.python.org/downloads/">
+    <img src="https://img.shields.io/badge/Python-3.10+-yellow?style=for-the-badge" alt="Python">
+  </a>
+  <a href="https://github.com/badhope/Woclaw/actions">
+    <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=github-actions" alt="Build">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/badhope/Woclaw/stargazers">
+    <img src="https://img.shields.io/github/stars/badhope/Woclaw?style=for-the-badge&color=FFD700" alt="Stars">
+  </a>
+  <a href="https://github.com/badhope/Woclaw/network/members">
+    <img src="https://img.shields.io/github/forks/badhope/Woclaw?style=for-the-badge&color=orange" alt="Forks">
+  </a>
+  <a href="https://github.com/badhope/Woclaw/issues">
+    <img src="https://img.shields.io/badge/Issues-Welcome-red?style=for-the-badge" alt="Issues">
+  </a>
+  <a href="https://github.com/badhope/Woclaw/pulls">
+    <img src="https://img.shields.io/badge/PR-Welcome-blue?style=for-the-badge" alt="PR">
+  </a>
+</p>
+
+<div align="center">
+
+```
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║     ██╗   ██╗██╗   ██╗███╗   ███╗ ██████╗ ███╗   ██╗ █████╗ ██████╗     ║
+║     ██║   ██║██║   ██║████╗ ████║██╔═══██╗████╗  ██║██╔══██╗██╔══██╗    ║
+║     ██║   ██║██║   ██║██╔████╔██║██║   ██║██╔██╗ ██║███████║██████╔╝    ║
+║     ╚██╗ ██╔╝██║   ██║██║╚██╔╝██║██║   ██║██║╚██╗██║██╔══██║██╔══██╗    ║
+║      ╚████╔╝ ╚██████╔╝██║ ╚═╝ ██║╚██████╔╝██║ ╚████║██║  ██║██║  ██║    ║
+║       ╚═══╝   ╚═════╝ ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝    ║
+║                                                                              ║
+║                    🌟  AI Desktop Assistant  🌟                               ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+```
+
+</div>
 
 ---
 
-[![GitHub Stars](https://img.shields.io/github/stars/badhope/Woclaw?style=for-the-badge&color=FFD700)](https://github.com/badhope/Woclaw/stargazers)
-[![Version](https://img.shields.io/badge/version-0.2.0--alpha-blue?style=for-the-badge)](https://github.com/badhope/Woclaw/releases)
-[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.10+-yellow?style=for-the-badge)](https://www.python.org/)
-[![Windows](https://img.shields.io/badge/Windows-Support-brightgreen?style=for-the-badge&logo=windows)](https://github.com/badhope/Woclaw)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=github-actions)](https://github.com/badhope/Woclaw/actions)
+## 🎯 What is Woclaw?
 
-[![Stars](https://img.shields.io/badge/Stars-Welcome-FFD700?style=for-the-badge&logo=github)](https://github.com/badhope/Woclaw/stargazers)
-[![Issues](https://img.shields.io/badge/Issues-Welcome-red?style=for-the-badge&logo=github)](https://github.com/badhope/Woclaw/issues)
-[![PR](https://img.shields.io/badge/PR-Welcome-blue?style=for-the-badge&logo=github)](https://github.com/badhope/Woclaw/pulls)
+**Woclaw** (pronounced "Wok-law") is a lightweight, intelligent **AI desktop assistant** that helps you control your computer through natural language.
+
+> *"Like a guiding star in the dark, Woclaw illuminates your path through computer operations."*
+
+### Core Philosophy
+
+Unlike traditional automation tools that require you to become a programmer, Woclaw understands **natural language** and acts as a human would—managing files, controlling applications, automating workflows, and learning from experience.
 
 ---
 
-## ✨ 什么是 Woclaw？
+## ✨ Key Features
 
-**Woclaw**（谐音"启明星"）是一个**轻量级自主电脑控制 AI 助手**。它能理解你的自然语言指令，帮你操控电脑完成各种任务——从简单的文件管理到复杂的 GUI 自动化操作。
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🧠 **Intelligent Supervisor** | Understands your intent, plans execution | ✅ |
+| 🔧 **Universal Control** | Files, processes, GUI, web requests—all handled | ✅ |
+| 📚 **Self-Learning** | Learns from mistakes, gets smarter over time | ✅ |
+| 🔒 **Safety First** | Risk-tiered system, confirmations for dangerous ops | ✅ |
+| 🛠️ **5 Built-in Workers** | File, GUI, Shell, Web, System operations | ✅ |
+| 💬 **Multi-Platform** | CLI, WeChat, DingTalk, Feishu... | 🚧 |
+| 🌐 **Internationalization** | Chinese, English, Japanese | ✅ |
 
-**核心理念**：让 AI 像人类一样操作电脑，而不是让你变成程序员。
+---
 
-### 🌟 品牌故事
+## 🚀 Quick Start
 
-> Woclaw 的名字来源于"启明星"——北极星，指引方向的星光。
-> 无论你在电脑操作的黑暗中迷失，Woclaw 都会像那颗最亮的星，为你指引方向。
+### 🪟 Windows (Recommended)
 
-## 🎯 核心特性
-
-| 特性 | 说明 |
-|------|------|
-| 🧠 **智能决策者** | Supervisor Agent 理解你的意图，制定执行计划 |
-| 🔧 **全能操控** | 文件、进程、GUI 窗口、网络请求，全部拿下 |
-| 📚 **自我进化** | 从错误中学习，越用越聪明 |
-| 🔒 **安全可控** | 风险分级，高风险操作需要确认 |
-| 🛠️ **工具丰富** | 开箱即用的 5 大 Worker |
-| 💬 **多平台支持** | CLI、微信、钉钉、飞书... |
-| 🌐 **国际化** | 支持中文、English、日语 |
-
-## 🚀 一键安装
-
-### Windows 用户（推荐）
-
-打开 **PowerShell**，复制粘贴这一行命令：
+Open **PowerShell** and run:
 
 ```powershell
 irm https://raw.githubusercontent.com/badhope/Woclaw/main/scripts/install.ps1 | iex
 ```
 
-**就是这么简单！** 脚本会自动：
-- ✅ 安装 Python（如果没有）
-- ✅ 安装 Ollama 本地模型（如果没有）
-- ✅ 安装 Woclaw 和所有依赖
-- ✅ 创建桌面快捷方式
-- ✅ 自动配置，开箱即用
+**That's it!** The script automatically:
+- ✅ Installs Python (if needed)
+- ✅ Installs Ollama local model (if needed)
+- ✅ Installs Woclaw and all dependencies
+- ✅ Creates desktop shortcut
+- ✅ Ready to use out of the box
 
-**2-5 分钟后，双击桌面的 Woclaw 图标即可开始使用！**
+**In 2-5 minutes, double-click the Woclaw icon to start!**
 
----
-
-### 其他安装方式
+### Other Installation Methods
 
 <details>
-<summary>📦 手动安装（适合开发者）</summary>
+<summary>📦 Manual Installation (For Developers)</summary>
 
 ```bash
 git clone https://github.com/badhope/Woclaw.git
@@ -78,7 +116,7 @@ woclaw chat
 </details>
 
 <details>
-<summary>🐳 Docker 安装</summary>
+<summary>🐳 Docker Installation</summary>
 
 ```bash
 docker build -t woclaw .
@@ -89,182 +127,185 @@ docker run -it woclaw chat
 
 ---
 
-### 环境要求
+## 📋 Requirements
 
-| 项目 | 要求 |
-|------|------|
-| 系统 | Windows 10/11（主要支持）|
-| Python | 3.10+（自动安装）|
-| 内存 | 4GB+ RAM |
-| 磁盘 | 1GB 可用空间 |
-| 模型 | Ollama（自动安装）或 API Key |
+| Component | Requirement |
+|-----------|-------------|
+| OS | Windows 10/11 (Primary) |
+| Python | 3.10+ (Auto-installed) |
+| RAM | 4GB+ |
+| Storage | 1GB free |
+| Model | Ollama (Auto-installed) or API Key |
 
-### 手动安装
+---
 
-```bash
-# 克隆项目
-git clone https://github.com/badhope/Woclaw.git
-cd Woclaw
+## 💻 Usage
 
-# 安装依赖
-pip install -e .
-
-# 启动交互模式
-woclaw chat
-```
-
-### Docker 安装（可选）
+### Basic Commands
 
 ```bash
-# 构建镜像
-docker build -t woclaw .
-
-# 运行容器
-docker run -it woclaw chat
-```
-
-## 📖 使用指南
-
-### 基本命令
-
-```bash
-# 交互式聊天
+# Interactive chat
 woclaw chat
 
-# 执行单个任务
-woclaw run "帮我整理下载文件夹"
+# Execute single task
+woclaw run "Organize my downloads folder"
 
-# 查看状态
+# Check status
 woclaw status
 
-# 查看可用工具
+# List available tools
 woclaw tools
 
-# 初始化配置
+# Initialize configuration
 woclaw init
 ```
 
-### 配置模型
+### Configure Model
 
 ```bash
-# 使用 Ollama（本地免费，推荐）
+# Use Ollama (Local, Free, Recommended)
 export WOCLAW_LLM=ollama
 export WOCLAW_MODEL=llama3.2
 woclaw chat
 
-# 使用 OpenAI
+# Use OpenAI
 export WOCLAW_LLM=openai
 export OPENAI_API_KEY=sk-your-key
 woclaw chat
 
-# 使用 Claude
+# Use Claude
 export WOCLAW_LLM=claude
 export ANTHROPIC_API_KEY=sk-ant-your-key
 woclaw chat
 ```
 
-### 支持的模型提供商
+### Supported Providers
 
-| 提供商 | 模型示例 | 需要 API Key |
-|--------|----------|--------------|
-| Ollama | llama3.2, qwen2.5, codellama | ❌ 否（本地免费）|
-| OpenAI | gpt-4o, gpt-4, gpt-3.5 | ✅ 是 |
-| Claude | claude-3-5-sonnet, claude-3-opus | ✅ 是 |
-| DeepSeek | deepseek-chat, deepseek-coder | ✅ 是 |
-| Kimi | moonshot-v1-8k, moonshot-v1-32k | ✅ 是 |
-| 通义千问 | qwen-plus, qwen-max | ✅ 是 |
+| Provider | Example Models | API Key Required |
+|----------|---------------|-----------------|
+| Ollama | llama3.2, qwen2.5, codellama | ❌ No (Free Local) |
+| OpenAI | gpt-4o, gpt-4, gpt-3.5 | ✅ Yes |
+| Claude | claude-3-5-sonnet, claude-3-opus | ✅ Yes |
+| DeepSeek | deepseek-chat, deepseek-coder | ✅ Yes |
+| Kimi | moonshot-v1-8k, moonshot-v1-32k | ✅ Yes |
+| Qwen | qwen-plus, qwen-max | ✅ Yes |
 
-## 🏗️ 系统架构
+---
 
-```
-用户消息
-    ↓
-┌─────────────────────────────────────────┐
-│           Supervisor（决策者）                │
-│                                          │
-│  • 理解意图  • 拆解任务  • 审批计划        │
-│  • 验证结果  • 整合输出  • 自我学习        │
-└─────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────┐
-│            Workers（工作者）               │
-│                                          │
-│  • FileWorker   - 文件操作（读/写/整理）  │
-│  • GuiWorker    - GUI 操控（窗口/点击）  │
-│  • ShellWorker  - 命令执行（脚本/终端）  │
-│  • WebWorker    - 网络请求（HTTP/API）    │
-│  • SysWorker    - 系统信息（进程/监控）   │
-└─────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────┐
-│          Learning（学习系统）               │
-│                                          │
-│  • LEARNINGS.md  - 成功经验记录          │
-│  • ERRORS.md     - 错误教训记录          │
-│  • FEEDBACK.md   - 用户偏好记录          │
-└─────────────────────────────────────────┘
-```
-
-## 🎨 使用示例
-
-### 文件管理
+## 🏗️ Architecture
 
 ```
-你：把下载文件夹里的图片按日期整理
-星灵：好的！我来帮你整理图片~
-
-✅ 扫描下载文件夹（找到 32 张图片）
-✅ 创建分类文件夹（2026-03、2026-02...）
-✅ 移动文件到对应文件夹
-✨ 完成！已整理 32 张图片
+User Message
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      Supervisor (Decision Layer)                              │
+│                                                                              │
+│  • Understand Intent   • Break Down Tasks   • Approve Plan                  │
+│  • Verify Results      • Synthesize Output   • Self-Learn                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         Workers (Execution Layer)                             │
+│                                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+│  │   File       │  │   GUI        │  │   Shell     │  │   Web       │     │
+│  │   Worker     │  │   Worker     │  │   Worker    │  │   Worker    │     │
+│  │              │  │              │  │             │  │             │     │
+│  │ • Read/Write │  │ • Click     │  │ • Scripts   │  │ • HTTP     │     │
+│  │ • Organize   │  │ • Type      │  │ • Terminal  │  │ • APIs     │     │
+│  │ • Search     │  │ • Windows   │  │ • Commands  │  │ • Scraping │     │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘     │
+│                                                                              │
+│  ┌─────────────┐                                                            │
+│  │   System    │                                                            │
+│  │   Worker   │                                                            │
+│  │            │                                                            │
+│  │ • Process  │                                                            │
+│  │ • Monitor  │                                                            │
+│  │ • Info     │                                                            │
+│  └─────────────┘                                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        Learning System                                       │
+│                                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                       │
+│  │  LEARNINGS  │  │    ERRORS   │  │   FEEDBACK  │                       │
+│  │    .md      │  │     .md      │  │     .md     │                       │
+│  │             │  │             │  │             │                       │
+│  │ • Success   │  │ • Mistakes   │  │ • Preferences│                       │
+│  │   Patterns  │  │   Lessons   │  │ • History   │                       │
+│  └─────────────┘  └─────────────┘  └─────────────┘                       │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### GUI 操控
+---
+
+## 🎨 Usage Examples
+
+### 📁 File Management
 
 ```
-你：帮我打开记事本，输入"你好启明星"然后保存
-星灵：收到！马上操作~
+You: Organize images in Downloads folder by date
+Woclaw: Sure! Let me organize those images for you~
 
-✅ 打开记事本
-✅ 激活窗口
-✅ 输入文本
-✅ 点击文件菜单
-✅ 点击另存为
-✅ 保存文件
-✨ 完成！文件已保存
+✅ Scanned Downloads folder (found 32 images)
+✅ Created date folders (2026-03, 2026-02...)
+✅ Moved files to corresponding folders
+✨ Done! Organized 32 images
 ```
 
-### 系统监控
+### 🖥️ GUI Automation
 
 ```
-你：帮我看看电脑状态，有没有占用内存太多的程序
-星灵：好的！让我检查一下~
+You: Open Notepad, type "Hello Woclaw", and save
+Woclaw: On it! Just a moment~
 
-✅ CPU: 23% 使用率
-✅ 内存: 16.2 GB / 32 GB (50.6%)
-✅ 磁盘: 256 GB / 512 GB (50%)
-✅ 最高内存占用:
+✅ Launched Notepad
+✅ Activated window
+✅ Typed text
+✅ Clicked File menu
+✅ Clicked Save As
+✅ Saved file
+✨ Done! File saved successfully
+```
+
+### 📊 System Monitoring
+
+```
+You: Check my PC status, any memory-hogging programs?
+Woclaw: Let me take a look~
+
+✅ CPU: 23% usage
+✅ Memory: 16.2 GB / 32 GB (50.6%)
+✅ Disk: 256 GB / 512 GB (50%)
+✅ Top Memory Usage:
    1. chrome.exe - 2.1 GB
    2. code.exe - 1.8 GB
    3. woclaw.exe - 450 MB
-✨ 没有发现异常情况！
+✨ No anomalies detected!
 ```
 
-## 🔧 配置文件
+---
 
-配置文件位于 `~/.woclaw/config.yaml`：
+## 🔧 Configuration
+
+Config file: `~/.woclaw/config.yaml`
 
 ```yaml
-# Woclaw 配置文件示例
+# Woclaw Configuration
 
-# LLM 配置
+# LLM Settings
 llm:
-  provider: ollama  # ollama, openai, claude, deepseek, kimi, qwen
-  model: llama3.2   # 具体模型名
-  api_key: ""       # API Key（云端模型需要）
-  base_url: http://localhost:11434  # Ollama 地址
+  provider: ollama        # ollama, openai, claude, deepseek, kimi, qwen
+  model: llama3.2        # Model name
+  api_key: ""            # API Key (cloud models only)
+  base_url: http://localhost:11434  # Ollama address
 
-# Worker 配置
+# Worker Settings
 workers:
   shell:
     timeout: 300
@@ -273,114 +314,153 @@ workers:
   web:
     timeout: 30
 
-# 安全配置
+# Security
 security:
   allow_dangerous: false
   confirm_on_delete: true
   log_commands: true
 
-# 学习配置
+# Learning
 learning:
   enabled: true
   auto_save: true
   data_dir: ~/.woclaw/.learnings
 ```
 
-## 📁 项目结构
+---
+
+## 📂 Project Structure
 
 ```
 woclaw/
 ├── src/
 │   └── woclaw/
-│       ├── supervisor/          # 决策层
-│       │   ├── agent.py        # Supervisor 主逻辑
-│       │   ├── planner.py      # 任务规划
-│       │   └── executor.py      # 执行调度
-│       ├── workers/            # 执行层
-│       │   ├── base.py         # Worker 基类
-│       │   ├── file_worker.py  # 文件操作
-│       │   ├── gui_worker.py   # GUI 操控
-│       │   ├── shell_worker.py # 命令执行
-│       │   ├── web_worker.py   # 网络请求
-│       │   └── sys_worker.py   # 系统信息
-│       ├── learning/            # 学习层
-│       │   └── memory.py       # 学习记忆
-│       ├── llm/                 # 模型层
-│       │   └── registry.py     # 模型注册表
-│       └── cli.py              # 命令行入口
+│       ├── supervisor/          # Decision layer
+│       │   ├── agent.py       # Supervisor main
+│       │   ├── planner.py     # Task planning
+│       │   └── executor.py     # Execution
+│       ├── workers/            # Execution layer
+│       │   ├── base.py         # Worker base class
+│       │   ├── file_worker.py  # File operations
+│       │   ├── gui_worker.py   # GUI control
+│       │   ├── shell_worker.py # Command execution
+│       │   ├── web_worker.py   # Network requests
+│       │   └── sys_worker.py  # System info
+│       ├── learning/           # Learning layer
+│       │   └── memory.py      # Memory & learning
+│       ├── llm/                # Model layer
+│       │   └── registry.py     # Model registry
+│       └── cli.py              # CLI entry
 ├── scripts/
-│   └── install.ps1            # Windows 一键安装
-├── tests/                       # 测试
-├── docs/                        # 文档（中/英/日）
+│   └── install.ps1             # Windows installer
+├── tests/                      # Tests
+├── docs/                       # Docs (CN/EN/JP)
 ├── .github/
-│   └── workflows/             # CI/CD 配置
-└── pyproject.toml              # 项目配置
+│   └── workflows/             # CI/CD
+├── ARCHITECTURE.md             # Architecture docs
+├── CHANGELOG.md               # Changelog
+├── CONTRIBUTING.md            # Contributing guide
+├── LICENSE                    # MIT License
+├── pyproject.toml             # Project config
+└── README.md                  # This file
 ```
 
-## 🤝 贡献指南
+---
 
-欢迎贡献代码！
+## 🤝 Contributing
 
-### 开发环境设置
+We welcome contributions!
+
+### Development Setup
 
 ```bash
-# 克隆并进入目录
+# Clone repository
 git clone https://github.com/badhope/Woclaw.git
 cd Woclaw
 
-# 创建虚拟环境
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # or
 .\venv\Scripts\activate  # Windows
 
-# 安装开发依赖
+# Install dev dependencies
 pip install -e ".[dev]"
 
-# 运行测试
+# Run tests
 pytest tests/
 
-# 代码格式检查
+# Code style
 ruff check src/
 black src/
 ```
 
-### 提交规范
+### Commit Convention
 
 ```
-feat: 新功能
-fix: 修复 bug
-docs: 文档更新
-style: 代码格式
-refactor: 重构
-test: 测试
-chore: 构建/工具
+feat: New feature
+fix: Bug fix
+docs: Documentation
+style: Code formatting
+refactor: Refactoring
+test: Tests
+chore: Build/tools
 ```
-
-## 🐛 问题反馈
-
-发现 Bug？请 [提交 Issue](https://github.com/badhope/Woclaw/issues)！
-
-## 📄 许可证
-
-本项目基于 [MIT 许可证](LICENSE) 开源。
 
 ---
 
-## 🙏 致谢
+## 📄 License
 
-- [pywinauto](https://github.com/pywinauto/pywinauto) - Windows GUI 自动化
-- [LangChain](https://github.com/langchain-ai/langchain) - LLM 框架参考
-- [OpenClaw](https://github.com/openclaw/openclaw) - 项目灵感来源
+This project is licensed under the **MIT License** - see [LICENSE](LICENSE).
 
 ---
 
-<div align="center">
+## 🙏 Acknowledgments
 
-**⭐ 如果 Woclaw 对你有帮助，请给我们一个 Star！**
+- [pywinauto](https://github.com/pywinauto/pywinauto) - Windows GUI automation
+- [LangChain](https://github.com/langchain-ai/langchain) - LLM framework reference
+- [OpenClaw](https://github.com/openclaw/openclaw) - Project inspiration
 
-*让启明星照亮更多人的电脑*
+---
 
-**Made with ✨ by Woclaw Team**
+## 📞 Support
 
-</div>
+| Channel | Link |
+|---------|------|
+| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/badhope/Woclaw/issues) |
+| 💬 **Discussions** | [GitHub Discussions](https://github.com/badhope/Woclaw/discussions) |
+| 📖 **Wiki** | [GitHub Wiki](https://github.com/badhope/Woclaw/wiki) |
+
+---
+
+<p align="center">
+  <strong>⭐ If Woclaw helps you, please give it a star! ⭐</strong>
+</p>
+
+<p align="center">
+  <em>"Let the guiding star illuminate more people's computers"</em>
+</p>
+
+<p align="center">
+  Made with ✨ by <a href="https://github.com/badhope">Woclaw Team</a>
+</p>
+
+---
+
+<p align="center">
+  <a href="https://github.com/badhope/Woclaw">Home</a> •
+  <a href="https://github.com/badhope/Woclaw/releases">Releases</a> •
+  <a href="https://github.com/badhope/Woclaw/issues">Issues</a> •
+  <a href="https://github.com/badhope/Woclaw/discussions">Discussions</a>
+</p>
+
+---
+
+<!-- MARKDOWN BADGES -->
+
+[version-shield]: https://img.shields.io/badge/Version-v0.3.0--alpha-FFD700?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/License-MIT-green?style=for-the-badge
+[python-shield]: https://img.shields.io/badge/Python-3.10+-yellow?style=for-the-badge
+[build-shield]: https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/badhope/Woclaw?style=for-the-badge&color=FFD700
+[forks-shield]: https://img.shields.io/github/forks/badhope/Woclaw?style=for-the-badge&color=orange
