@@ -1,0 +1,28 @@
+{
+  "name": "evolution",
+  "version": "1.0.0",
+  "description": "AI进化引擎 - 让AI自主创造、优化、进化技能。基于SkillRL、GenericAgent和Memento-Skills技术，实现真正的递归自我改进。",
+  "description_en": "AI Evolution Engine - Enables AI to autonomously create, optimize, and evolve skills. Based on SkillRL, GenericAgent, and Memento-Skills for true recursive self-improvement.",
+  "author": "Woclab AI Team",
+  "category": "core",
+  "tags": ["evolution", "self-improvement", "skill-creation", "AGI", "recursive", "metaskill"],
+  "requires": ["aiohttp", "numpy", "scipy"],
+  "entry": "scripts/run.py",
+  "icon": "🧬",
+  "features": [
+    "自主探索新任务解决方案",
+    "TrueSkill技能评级系统",
+    "技能自动孵化",
+    "TextGrad反馈优化",
+    "达尔文式技能进化",
+    "技能血统追踪"
+  ],
+  "evolution_config": {
+    "discovery_attempts": 3,
+    "success_threshold": 0.8,
+    "optimization_cycles": 5,
+    "mutation_rate": 0.2,
+    "selection_pressure": 0.7,
+    "auto_evolve": true
+  }
+}

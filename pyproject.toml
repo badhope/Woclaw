@@ -1,0 +1,126 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "woclaw"
+version = "0.2.0-alpha"
+description = "启明星 AI 助手 - 轻量级自主电脑控制智能体"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Woclaw Team", email = "team@woclaw.dev"}
+]
+keywords = [
+    "ai", "agent", "automation", "llm", "autonomous",
+    "computer-control", "desktop-automation", "启明星",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.10"
+
+# ⭐ 核心依赖（必须安装）
+dependencies = [
+    # CLI 框架
+    "click>=8.0.0",
+    "rich>=13.0.0",
+
+    # 网络请求
+    "aiohttp>=3.8.0",
+
+    # 系统监控
+    "psutil>=5.9.0",
+
+    # 文件操作
+    "pathlib>=0.1.0",  # Python 内置，无需安装
+
+    # 截图和图像
+    "pyscreeze>=0.1.26",
+    "Pillow>=10.0.0",
+
+    # Windows GUI 自动化（核心功能！）
+    "pywinauto>=0.6.8",
+]
+
+# 云端 API 支持（可选）
+dependencies-api = [
+    "openai>=1.0.0",
+    "anthropic>=0.18.0",
+]
+
+# 本地模型支持
+dependencies-local = [
+    # Ollama 无需额外依赖，使用 aiohttp
+]
+
+# 浏览器自动化
+dependencies-browser = [
+    "playwright>=1.40.0",
+]
+
+# 开发依赖
+dependencies-dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+]
+
+# 完整依赖
+dependencies-all = [
+    *dependencies,
+    *dependencies-api,
+    *dependencies-browser,
+]
+
+[project.optional-dependencies]
+api = dependencies-api
+local = dependencies-local
+browser = dependencies-browser
+all = dependencies-all
+dev = dependencies-dev
+
+[project.scripts]
+woclaw = "woclaw.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/badhope/Woclaw"
+Repository = "https://github.com/badhope/Woclaw.git"
+Documentation = "https://github.com/badhope/Woclaw#readme"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["woclaw*"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "W", "F", "I", "B", "C4", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+disallow_untyped_defs = false  # 允许未类型标注
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
